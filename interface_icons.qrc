@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/icons/versions">
+        <file>Icons/root_icon.jpg</file>
+    </qresource>
+    <qresource prefix="/icons/project">
+        <file>Icons/project_icon.png</file>
+        <file>Icons/proj_icon.png</file>
+        <file>Icons/project_create.png</file>
+    </qresource>
+    <qresource prefix="/icons/logics">
+        <file>Icons/class_icon.png</file>
+        <file>Icons/module_icon.png</file>
+        <file>Icons/function_icon.png</file>
+    </qresource>
+</RCC>
