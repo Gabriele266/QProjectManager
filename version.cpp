@@ -64,7 +64,12 @@ bool Version::createOnDisk(Version *source){
 
                 // formatto il percorso totale
                 complete_path = relative_path + '\\' + project_name + '\\' + complete_name;
+                // Aggiusto gli /
+                complete_path = complete_path.replace('/', '\\');
+
+                // Scrivo le informazioni di debug
                 qInfo() << "percorso completo creazione versione: " << complete_path << '\n';
+                // Formatto il comando di creazione della versione
                 QString dir_command = "MKDIR " + complete_path;
                 qInfo() << "comando creazione versione: " << dir_command << '\n';
                 // creo il percorso
@@ -219,6 +224,7 @@ void Version::throwError(QString text){
 
 void Version::setCreationPath(QString path){
     relative_path = path;
+    complete_path = path;
 }
 
 void Version::setProjectName(QString name){
@@ -233,8 +239,6 @@ QString Version::getCreationPath(){
         return relative_path;
     }
 }
-
-
 
 void Version::setFinalNameCrFlags(VersionNameFlag flags[10]){
     // copio l'array a in b

@@ -110,7 +110,7 @@ void MainWindow::loadProject(){
         if(current_project->hasMaster()){
             Version *master = current_project->getMasterVersion();
             // la aggiungo alla struttura
-            addItem(parent, master->getName(), "Versione master", true, ui->logicStrTree);
+            addItem(parent, master->getNumericId(), "Versione master", true, ui->logicStrTree);
         }
 
         // scorro le versioni presenti nel progetto per aggiungere i child
@@ -126,7 +126,7 @@ void MainWindow::loadProject(){
     }
     else{
         QMessageBox *msg = new QMessageBox();
-        msg->setText("Errore: è stato chiamato il caricamento del progetto senza un progetto specificato!!");
+        msg->setText("Errore: è stato chiamato il caricamento del progetto senza un progetto specificato.");
         msg->exec();
     }
 }

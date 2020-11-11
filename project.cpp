@@ -138,11 +138,15 @@ Project* Project::loadFromDisk(QString file_path){
             QDomElement root = document.firstChildElement("project");
             // Lista con gli elementi figli
             QDomNodeList childs = root.childNodes();
+            // Numero di elementi nel nodo
+            int child_count = childs.count();
+            // Numero di elementi rimanente
+            int child_remain = child_count;
 
             qInfo() << "Root child elements: " << childs.count() << endl;
 
             // Controllo il numero di nodi
-            if(childs.count() >= 2){
+            if(child_count >= 2){
                 // Prendo il primo nodo e lo converto in elemento
                 QDomElement informations_elem = childs.at(0).toElement();
 
@@ -154,6 +158,8 @@ Project* Project::loadFromDisk(QString file_path){
 
                 // Estraggo la data di creazione
                 project->setCreationTime(QDateTime::fromString(informations_elem.attribute("creationDate")));
+                // Tolgo un elemento dal contatore
+                child_remain --;
 
                 // Calcolo il percorso home del progetto
                 QFileInfo info(read);
@@ -161,12 +167,18 @@ Project* Project::loadFromDisk(QString file_path){
                 comp.cdUp();
                 project->setPath(comp.path());
 
+                // Tolgo un elemento
+                child_remain --;
+
                 // Carico le informazioni della versione master
-                if(childs.count() > 2){
+                if(child_count > 2){
                     // Converto in elemento
                     QDomElement master_elem = childs.at(2).toElement();
+                    // Testo dell' elemento
                     QDomText text = master_elem.firstChild().toText();
+                    // Versione master
                     Version *master = new Version();
+
                     // Estraggo le informazioni necessarie
                     master->setNumericId(master_elem.attribute("id"));
                     master->setMaster(true);
@@ -174,6 +186,41 @@ Project* Project::loadFromDisk(QString file_path){
                     master->setProjectName(project->getName());
                     // Aggiungo la versione al progetto
                     project->setMasterVersion(master);
+
+                    // Tolgo un elemento
+                    child_remain --;
+
+                    // Controllo se ci sono versioni da caricare
+                    if(child_remain > 0){
+                        // Carico le versioni nel progetto
+                        // Arry con puntatori alle versioni
+                        Version *versions[200];
+
+                        for(int x = 0; x < child_remain; x++){
+                            // Creo un elemento DOM
+                            QDomElement version_elem = childs.at(x + 3).toElement();
+                            QDomText text_ = version_elem.firstChild().toText();
+                            qInfo() << "Versione con percorso: " << text_.nodeValue();
+
+                            // Creo la versione
+                            versions[x] = new Version();
+                            // Imposto il nome
+                            versions[x]->setVersionName(version_elem.attribute("name"));
+                            // Imposto il nome del progetto
+                            versions[x]->setProjectName(project->getName());
+                            // Imposto la data di creazione
+                            versions[x]->setCreationTime(QDateTime::fromString(version_elem.attribute("creation_time")));
+                            // Imposto la data di ultima modifica
+                            versions[x]->setLastModifyTime(QDateTime::fromString(version_elem.attribute("last_modify")));
+                            // Imposto l'id
+                            versions[x]->setNumericId(version_elem.attribute("id"));
+                            // Imposto il percorso di creazione
+                            versions[x]->setCreationPath(text_.nodeValue());
+                            qInfo() << "Percorso versione aggiunta: " << versions[x]->getCreationPath() << endl;
+                            // Aggiungo la versione al progetto
+                            project->addVersion(versions[x]);
+                        }
+                    }
                 }
             }
             else{
@@ -194,14 +241,17 @@ Project* Project::loadFromDisk(QString file_path){
 }
 
 bool Project::createProjectFolder(){
-    QString comm = "MKDIR " + path + "\\" + name;
+    // Formatto il comando da usare
+    QString comm = "MKDIR " + getHomePath();
+
+    // eseguo il comando e controllo il risultato
     int res = system(comm.toStdString().c_str());
     if(res == 0){
         return true;
     }
     else{
         QMessageBox *msg = new QMessageBox();
-        msg->setText("Errore nella creazione della cartella di progetto. COmando: " + comm);
+        msg->setText("Errore nella creazione della cartella di progetto. Comando: " + comm);
         msg->setIcon(QMessageBox::Critical);
         msg->exec();
         return false;
@@ -210,7 +260,7 @@ bool Project::createProjectFolder(){
 
 bool Project::createProjectFile(){
     // formatto il nome
-    QString file_path = path + "\\" + name + "\\" + name + ".prjm";
+    QString file_path = getFilePath();
     // Documento DOM per la gestione dell' xml
     QDomDocument document;
     // creo il file
