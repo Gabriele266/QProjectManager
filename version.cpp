@@ -35,6 +35,10 @@ void Version::setStable(bool val){
     is_stable = val;
 }
 
+void Version::setVersionName(QString n){
+    version_name = n;
+}
+
 bool Version::createOnDisk(Version *source){
     qInfo() << "Creazione sul disco della versione " << version_name << '\n';
     // controllo che tutto il necessario sia disponibile

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<progetto>
+	<informazioni nome="nuovo progetto" percorso="C:\" relativo="false" autore="Gabriele"></informazioni>
+	<versionemaster>
+		<percorso valore="C:\Users\Gabriele\" relativo="true" />
+		<modifica valore="false" />
+		<tipologia linguaggio="C++" tipo_interfaccia="DOS" />
+		<nome valore="master" />
+		<id maj="0" sub="0" rev="0" />
+	</versionemaster>
+</progetto>

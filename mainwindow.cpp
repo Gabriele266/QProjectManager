@@ -693,3 +693,60 @@ void MainWindow::on_actionFlag_instabile_triggered()
         QMessageBox::critical(this, "Errore", "Impossibile impostare la versione come stabile. ");
     }
 }
+
+void MainWindow::on_actionApri_in_explorer_triggered()
+{
+    // Apre il simbolo corrente nell' explorer
+    on_openInExplorerBtn_clicked();
+}
+
+void MainWindow::on_actionApri_in_terminale_triggered()
+{
+
+}
+
+bool MainWindow::loadProjectFromDisk(){
+    // Mostro un dialogo per scegliere il file di progetto
+    QFileDialog dial;
+    // Imposto la cartella di partenza
+    dial.setDirectory("C:\\");
+    // Imposto i filtri
+//    dial.setNameFilter("File di progetto ProjectManager (*.prjm)");
+//    dial.setNameFilter("*.prjm");
+
+    // Modifico il titolo della finestra
+    dial.setWindowTitle("Apri file di progetto ProjectManager");
+
+    // Mostro il dialogo
+    int result = dial.exec();
+
+    // Controllo il risultato
+    if(result == QFileDialog::Accepted){
+        // Creo il progetto
+        current_project = Project::loadFromDisk(dial.selectedFiles()[0]);
+        // Avvio la ricerca del progetto
+        // Carico il progetto
+        loadProject();
+    }
+    return true;
+}
+
+void MainWindow::on_actionApri_file_progetto_triggered()
+{
+    // Controllo che esista un progetto
+    if(current_project != nullptr){
+        // Apre il file di progetto
+        QStringList list;
+        list.append(current_project->getProjFilePath());
+        // Avvio il processo
+        QProcess::execute("NOTEPAD", list);
+    }
+    else{
+        QMessageBox::critical(this, "Errore", "Prima di poter aprire il file di progetto è necessario creare un progetto o aprirne uno. ");
+    }
+}
+
+void MainWindow::on_actionApri_progetto_triggered()
+{
+    loadProjectFromDisk();
+}

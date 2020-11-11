@@ -294,12 +294,14 @@ Makefile: ProjectManager.pro F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\mksp
 		ProjectManager.pro \
 		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Widgets.prl \
 		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Gui.prl \
+		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Xml.prl \
 		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Core.prl \
 		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\qtmain.prl \
 		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\mkspecs\features\build_pass.prf \
 		interface_icons.qrc \
 		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Widgetsd.prl \
 		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Guid.prl \
+		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Xmld.prl \
 		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Cored.prl \
 		F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\qtmaind.prl
 	$(QMAKE) -o Makefile ProjectManager.pro -spec win32-msvc "CONFIG+=qtquickcompiler"
@@ -513,12 +515,14 @@ F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\mkspecs\features\lex.prf:
 ProjectManager.pro:
 F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Widgets.prl:
 F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Gui.prl:
+F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Xml.prl:
 F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Core.prl:
 F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\qtmain.prl:
 F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\mkspecs\features\build_pass.prf:
 interface_icons.qrc:
 F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Widgetsd.prl:
 F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Guid.prl:
+F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Xmld.prl:
 F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\Qt5Cored.prl:
 F:\Applicativi\QtOpenSource\5.15.1\msvc2019_64\lib\qtmaind.prl:
 qmake: FORCE

@@ -10,6 +10,7 @@
 #include <QTreeView>
 #include <QTreeWidgetItem>
 #include <QGraphicsAnchorLayout>
+#include <QProcess>
 #include "masterversionwin.h"
 #include "newversionwin.h"
 #include "versionfileparser.h"
@@ -100,6 +101,14 @@ private slots:
 
     void on_actionFlag_instabile_triggered();
 
+    void on_actionApri_in_explorer_triggered();
+
+    void on_actionApri_in_terminale_triggered();
+
+    void on_actionApri_file_progetto_triggered();
+
+    void on_actionApri_progetto_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -109,7 +118,6 @@ private:
     QTreeWidgetItem* addItem(QTreeWidgetItem *parent, QString name, QString description, bool stable, QTreeWidget *widget);
 
     Project *current_project;
-    QGraphicsAnchorLayout *lay;
     QFileSystemModel *model;
 
     /// Apre il progetto corrente nell' explorer
@@ -130,7 +138,11 @@ private:
     /// Controlla se il progetto esiste e se non lo è manda una messagebox
     bool existsProject(QString why);
 
+    /// Aggiorna le logiche di progetto
     void updateLogics(QTreeWidgetItem *current);
+
+    /// Carica un progetto nell' ambiente
+    bool loadProjectFromDisk();
 
     /// Restituisce la versione selezionata nel logicStrTree
     Version* getCurrentVersion(bool exclude_master);

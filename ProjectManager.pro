@@ -1,4 +1,5 @@
 QT       += core gui
+QT += xml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,6 +11,7 @@ CONFIG += c++11
 
 SOURCES += \
     files_functions.cpp \
+    flags.cpp \
     logicclass.cpp \
     logicclassparser.cpp \
     logicfunction.cpp \

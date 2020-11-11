@@ -53,7 +53,7 @@ bool Project::hasMaster(){
 }
 
 QString Project::getProjFilePath(){
-    return path + '\\' + name;
+    return path + '\\' + name + ".prjm";
 }
 
 bool Project::existsVersion(QString numericId){
@@ -114,78 +114,8 @@ bool Project::create(){
     }
 }
 
-bool Project::loadFromDisk(QString file_path){
-    // Controllo che il percorso del file non sia nullo
-    if(file_path != "" && QFile::exists(file_path)){
-        // Il file esiste
-        // Leggo sequenzialmente le linee
-        QString current_line = "";
-        // Indicatore dello scope corrente
-        QString current_scope = "";
-        // Apro il file
-        QFile file(file_path);
-
-        // Controllo che sia aperto
-        if(file.open(QIODevice::ReadOnly)){
-            // Il file è aperto
-            while(!file.atEnd()){
-                // Leggo una linea
-                current_line = file.readLine();
-
-                // Rimuovo gli spazi iniziali
-                current_line = removeInitialSpaces(current_line);
-
-                // Controllo lo scope
-                if(current_line == "/section:projectinfo"){
-                    // Imposto lo scope corrente come quello di informazioni progetto
-                    current_scope = "project_info";
-                }
-                else if(current_line == "/section:annotations"){
-                    current_scope = "annotations";
-                }
-                else if(current_line == "/versions"){
-                    current_scope = "versions";
-                }
-                else if(current_scope == "project_info"){
-                    // Siamo nello scope delle informazioni del progetto
-                    // La linea corrente non esprime una direttiva di scope
-                    // Stringa con il nome del parametro
-                    QString param_name = current_line.split(':')[0];
-                    // Stringa con il valore del parametro
-                    QString param_val = current_line.split(':')[1];
-
-                    // Avvio la ricerca di parametri per il progetto
-                    searchProjectProperty(param_name, param_val);
-                }
-            }
-        }
-
-    }
-}
-
-bool Project::searchProjectProperty(QString param_name, QString param_val){
-    // Controllo
-    if(param_name != "" && param_val != ""){
-        // Controllo se si tratta di un parametro
-        if(param_name == "+name"){
-            // Questo parametro imposta il nome del progetto
-            name = param_val;
-            return true;
-        }
-        else if(param_name == "+creationtime"){
-            // Questo parametro imposta la data di creazione del progetto
-            setCreationTime(QDateTime::fromString(param_val));
-            return true;
-        }
-        else if(param_name == "+description"){
-            setDescription(param_val);
-            return true;
-        }
-        else{
-            // Per ora nessun errore
-            return false;
-        }
-    }
+Project* Project::loadFromDisk(QString file_path){
+    return new Project();
 }
 
 bool Project::createProjectFolder(){
@@ -206,52 +136,85 @@ bool Project::createProjectFolder(){
 bool Project::createProjectFile(){
     // formatto il nome
     QString file_path = path + "\\" + name + "\\" + name + ".prjm";
+    // Documento DOM per la gestione dell' xml
+    QDomDocument document;
     // creo il file
-    QFile *f = new QFile(file_path);
-    if(f->exists()){
+    QFile file(file_path);
+    if(file.exists()){
         // cancello il file
-        f->remove();
+        file.remove();
     }
-    if(f->open(QIODevice::WriteOnly | QIODevice::Text)){
-        // creo il textstream
-        QTextStream stream(f);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text)){
+        // Creo l'elemento root
+        QDomElement root_elem = document.createElement("project");
+        root_elem.setAttribute("version", PROGRAM_VERSION);
+        // Aggiungo al documento
+        document.appendChild(root_elem);
         // salvo l'orario
         setCreationTime(QDateTime::currentDateTime());
         // imposto l'orario di ultima modifica
         setLastModifyTime(QDateTime::currentDateTime());
-        stream << "@projectmanager project file" << endl;
-        // sezione informazioni progetto
-        stream << "/section:projectinfo" << endl;
-        stream << "\t+name:" << name << endl;
-        stream << "\t+creationtime:" << getLastModifyTime().toString() << endl;
-        stream << "\t+description:" << getDescription() << "+enddescription" << endl;
-        stream << "/section:annotations" << endl;
-        stream << "\t+annotationplace:" << "outsideproject" << endl;
-        stream << "\t+annotationpath:" << getNotesPath() << endl;
-        stream << "\t+annotationtype:" << "html" << endl;
-        // salvo la versione master se esiste
-        if(hasMaster()){
-            stream << "/master" << endl;
-            stream << "\t+id:" << masterVersion->getNumericId()<< endl;
-            stream << "\t+path:" << masterVersion->getCreationPath() << endl;
-            stream << "\t+description:" << masterVersion->getDescription() << endl;
-        }
-        stream << "/versions" << endl;
-        // salvo i percorsi delle versioni
-        for(unsigned int count = 0; count < versions_num; count++){
-            stream << "\t+newversion" << endl;
-            stream << "\t+name:" << subVersions[count]->getName() << endl;
-            stream << "\t+path:" << subVersions[count]->getCreationPath() << endl;
-            stream << "\t+id:" << subVersions[count]->getNumericId() << endl;
-            stream << "\t+creationtime:" << subVersions[count]->getCreationTime().toString() << endl;
-            stream << "\t+lastmodify:" << subVersions[count]->getLastModifyTime().toString() << endl;
-            stream << "\t+author:" << subVersions[count]->getAuthor() << endl;
-        }
-        stream << "/endversions" << endl;
-        stream.flush();
-        f->close();
 
-        // salvo l'orario di creazione
+        // Creo l'elemento per le informazioni del progetto
+        QDomElement info_elem = document.createElement("informations");
+        // Creo l'attributo per il nome
+        info_elem.setAttribute("name", name);
+        // Creo l' attributo per la data di creazione
+        info_elem.setAttribute("creationDate", getCreationTime().toString());
+        // Creo l' attributo per la descrizione
+        info_elem.setAttribute("descritption", getDescription());
+        // Creo l'elemento per le annotazioni
+        QDomElement annotations = document.createElement("annotations");
+        // Aggiungo l'elemento per la posizione delle annotazioni
+        annotations.setAttribute("location", "outside");
+        annotations.setAttribute("format", "html");
+        annotations.setNodeValue(getNotesPath());
+
+        info_elem.appendChild(annotations);
+        root_elem.appendChild(info_elem);
+        if(masterVersion != nullptr){
+            // Creo l'elemento per la versione master
+            QDomElement master_elem = document.createElement("master");
+
+            // Creo l'attributo per la descrizione
+            master_elem.setAttribute("description", masterVersion->getDescription());
+            master_elem.setAttribute("modify", "disabled");
+            master_elem.setAttribute("id", masterVersion->getNumericId());
+            // Creo un nodo di testo
+            QDomText text = document.createTextNode(masterVersion->getCreationPath());
+            // Aggiungo il testo al master_elem
+            master_elem.appendChild(text);
+
+            root_elem.appendChild(master_elem);
+
+            // Versione corrente nel ciclo
+            Version *current_version;
+
+            // salvo i percorsi delle versioni
+            for(unsigned int count = 0; count < versions_num; count++){
+                // Salvo la versione corrente
+                current_version = subVersions[count];
+
+                // Creo l'elemento
+                QDomElement current = document.createElement("version");
+                // Imposto gli attributi
+                current.setAttribute("name", current_version->getName());
+                current.setAttribute("id", current_version->getNumericId());
+                current.setAttribute("creation_time", current_version->getCreationTime().toString());
+                current.setAttribute("last_modify", current_version->getLastModifyTime().toString());
+                current.setAttribute("author", current_version->getAuthor());
+                QDomText txt = document.createTextNode(current_version->getCreationPath());
+                current.appendChild(txt);
+
+                // Aggiungo l'elemento al root
+                root_elem.appendChild(current);
+            }
+
+        }
+        // Scrivo il documento sul file
+        file.write(document.toString().toStdString().c_str());
+        file.close();
+
 
         return true;
     }

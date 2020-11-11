@@ -6,10 +6,12 @@
 #include <QTime>
 #include <QTextStream>
 #include <QDateTime>
+#include <QtXml>
 
 #include "version.h"
 #include "objectinfo.h"
 #include "utils.cpp"
+#include "flags.cpp"
 
 /// Rappresenta il tipo di progetto
 enum ProjectType{
@@ -44,7 +46,7 @@ public:
     bool create();
 
     /// Carica un progetto dal file sistem
-    bool loadFromDisk(QString file_path);
+    static Project* loadFromDisk(QString file_path);
 
     /// Restituisce il nome del progetto
     QString getName();
@@ -111,7 +113,7 @@ private:
     // versioni contenute
     Version *subVersions[100];
     // versione master
-    Version *masterVersion;
+    Version *masterVersion = nullptr;
     // Progetti contenuti
     //SubProject *subProjects;
 
@@ -140,10 +142,10 @@ private:
     bool createProjectAnnotations();
 
     /// Cerca e imposta le informazioni del progetto a partire da un nome di parametro e un valore
-    bool searchProjectProperty(QString param_name, QString param_val);
+    bool searchProjectProperty(QString current_line);
 
     /// Cerca e imposta le informazioni delle annotazioni a partire da un nome di parametro e un valore
-    bool searchAnnotationProperty(QString param_name, QString param_val);
+    bool searchAnnotationProperty(QString current_line);
 
     // determina se il progetto ha un file di informazioni
     bool infoFile;
