@@ -6,7 +6,7 @@ NewProjectWin::NewProjectWin(QWidget *parent) :
     ui(new Ui::NewProjectWin)
 {
     ui->setupUi(this);
-
+    setWindowTitle("Creazione nuovo progetto");
 }
 
 NewProjectWin::~NewProjectWin()

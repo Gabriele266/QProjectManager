@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1360</width>
+    <width>1438</width>
     <height>958</height>
    </rect>
   </property>
@@ -1435,13 +1435,6 @@
             </item>
             <item>
              <layout class="QGridLayout" name="gridLayout">
-              <item row="0" column="0">
-               <widget class="QPushButton" name="curObjInfoBtn">
-                <property name="text">
-                 <string>Informazioni</string>
-                </property>
-               </widget>
-              </item>
               <item row="0" column="1">
                <widget class="QPushButton" name="openInExplorerBtn">
                 <property name="text">
@@ -1449,10 +1442,10 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="2">
-               <widget class="QPushButton" name="openInTerminalBtn">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="curObjInfoBtn">
                 <property name="text">
-                 <string>Apri in terminale</string>
+                 <string>Informazioni</string>
                 </property>
                </widget>
               </item>
@@ -1463,17 +1456,24 @@
                 </property>
                </widget>
               </item>
-              <item row="0" column="4">
-               <widget class="QPushButton" name="deleteObjectBtn">
-                <property name="text">
-                 <string>Elimina</string>
-                </property>
-               </widget>
-              </item>
               <item row="0" column="5">
                <widget class="QPushButton" name="editObjectBtn">
                 <property name="text">
                  <string>Modifica</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QPushButton" name="openInTerminalBtn">
+                <property name="text">
+                 <string>Apri in terminale</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="4">
+               <widget class="QPushButton" name="deleteObjectBtn">
+                <property name="text">
+                 <string>Elimina</string>
                 </property>
                </widget>
               </item>
@@ -1930,7 +1930,7 @@
          </palette>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_3">
          <attribute name="title">
@@ -4469,7 +4469,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1360</width>
+     <width>1438</width>
      <height>20</height>
     </rect>
    </property>
@@ -5027,6 +5027,12 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
+   <property name="maximumSize">
+    <size>
+     <width>16777215</width>
+     <height>30</height>
+    </size>
+   </property>
    <property name="palette">
     <palette>
      <active>
@@ -5479,8 +5485,12 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionNuovo"/>
+   <addaction name="actionSalva"/>
    <addaction name="actionAggiungi_versione"/>
    <addaction name="separator"/>
+   <addaction name="actionApri_progetto"/>
+   <addaction name="separator"/>
+   <addaction name="actionModifica_versione"/>
   </widget>
   <action name="actionNuovo">
    <property name="icon">

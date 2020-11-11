@@ -57,6 +57,9 @@ public:
     /// Restituisce il percorso in cui si trovano i file di progetto
     QString getProjFilePath();
 
+    /// Restituisce il percorso in cui vengono create le versioni, dove vengono scritte le informazioni del progetto etc.
+    QString getProjHomePath();
+
     /// Determina se il progetto è stato salvato
     bool isSaved();
 

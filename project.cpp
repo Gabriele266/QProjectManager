@@ -37,6 +37,10 @@ void Project::save(){
     createProjectFile();
 }
 
+QString Project::getProjHomePath(){
+    return path + "\\" + name + "\\";
+}
+
 int Project::getVersionCount(){
     return versions_num;
 }

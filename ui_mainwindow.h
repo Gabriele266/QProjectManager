@@ -134,12 +134,12 @@ public:
     QVBoxLayout *verticalLayout_4;
     QTreeWidget *logicStrTree;
     QGridLayout *gridLayout;
-    QPushButton *curObjInfoBtn;
     QPushButton *openInExplorerBtn;
-    QPushButton *openInTerminalBtn;
+    QPushButton *curObjInfoBtn;
     QPushButton *newVersionBtn;
-    QPushButton *deleteObjectBtn;
     QPushButton *editObjectBtn;
+    QPushButton *openInTerminalBtn;
+    QPushButton *deleteObjectBtn;
     QTabWidget *tabWidget_2;
     QWidget *tab_3;
     QVBoxLayout *verticalLayout_6;
@@ -193,7 +193,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1360, 958);
+        MainWindow->resize(1438, 958);
         MainWindow->setMinimumSize(QSize(100, 200));
         QPalette palette;
         QBrush brush(QColor(0, 0, 0, 255));
@@ -594,35 +594,35 @@ public:
 
         gridLayout = new QGridLayout();
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        curObjInfoBtn = new QPushButton(tab_2);
-        curObjInfoBtn->setObjectName(QString::fromUtf8("curObjInfoBtn"));
-
-        gridLayout->addWidget(curObjInfoBtn, 0, 0, 1, 1);
-
         openInExplorerBtn = new QPushButton(tab_2);
         openInExplorerBtn->setObjectName(QString::fromUtf8("openInExplorerBtn"));
 
         gridLayout->addWidget(openInExplorerBtn, 0, 1, 1, 1);
 
-        openInTerminalBtn = new QPushButton(tab_2);
-        openInTerminalBtn->setObjectName(QString::fromUtf8("openInTerminalBtn"));
+        curObjInfoBtn = new QPushButton(tab_2);
+        curObjInfoBtn->setObjectName(QString::fromUtf8("curObjInfoBtn"));
 
-        gridLayout->addWidget(openInTerminalBtn, 0, 2, 1, 1);
+        gridLayout->addWidget(curObjInfoBtn, 0, 0, 1, 1);
 
         newVersionBtn = new QPushButton(tab_2);
         newVersionBtn->setObjectName(QString::fromUtf8("newVersionBtn"));
 
         gridLayout->addWidget(newVersionBtn, 0, 3, 1, 1);
 
-        deleteObjectBtn = new QPushButton(tab_2);
-        deleteObjectBtn->setObjectName(QString::fromUtf8("deleteObjectBtn"));
-
-        gridLayout->addWidget(deleteObjectBtn, 0, 4, 1, 1);
-
         editObjectBtn = new QPushButton(tab_2);
         editObjectBtn->setObjectName(QString::fromUtf8("editObjectBtn"));
 
         gridLayout->addWidget(editObjectBtn, 0, 5, 1, 1);
+
+        openInTerminalBtn = new QPushButton(tab_2);
+        openInTerminalBtn->setObjectName(QString::fromUtf8("openInTerminalBtn"));
+
+        gridLayout->addWidget(openInTerminalBtn, 0, 2, 1, 1);
+
+        deleteObjectBtn = new QPushButton(tab_2);
+        deleteObjectBtn->setObjectName(QString::fromUtf8("deleteObjectBtn"));
+
+        gridLayout->addWidget(deleteObjectBtn, 0, 4, 1, 1);
 
 
         verticalLayout_4->addLayout(gridLayout);
@@ -1182,7 +1182,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1360, 20));
+        menubar->setGeometry(QRect(0, 0, 1438, 20));
         QPalette palette9;
         palette9.setBrush(QPalette::Active, QPalette::WindowText, brush);
         palette9.setBrush(QPalette::Active, QPalette::Button, brush1);
@@ -1260,6 +1260,7 @@ public:
         MainWindow->setStatusBar(statusbar);
         toolBar = new QToolBar(MainWindow);
         toolBar->setObjectName(QString::fromUtf8("toolBar"));
+        toolBar->setMaximumSize(QSize(16777215, 30));
         QPalette palette10;
         palette10.setBrush(QPalette::Active, QPalette::WindowText, brush);
         palette10.setBrush(QPalette::Active, QPalette::Button, brush1);
@@ -1390,13 +1391,17 @@ public:
         menuProgetto->addAction(actionInformazioni);
         menuProgetto->addAction(actionEsporta_informazioni);
         toolBar->addAction(actionNuovo);
+        toolBar->addAction(actionSalva);
         toolBar->addAction(actionAggiungi_versione);
         toolBar->addSeparator();
+        toolBar->addAction(actionApri_progetto);
+        toolBar->addSeparator();
+        toolBar->addAction(actionModifica_versione);
 
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(1);
-        tabWidget_2->setCurrentIndex(1);
+        tabWidget_2->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -1523,12 +1528,12 @@ public:
         ___qtreewidgetitem->setText(2, QCoreApplication::translate("MainWindow", "Stabile", nullptr));
         ___qtreewidgetitem->setText(1, QCoreApplication::translate("MainWindow", "Informazioni", nullptr));
         ___qtreewidgetitem->setText(0, QCoreApplication::translate("MainWindow", "Elemento", nullptr));
-        curObjInfoBtn->setText(QCoreApplication::translate("MainWindow", "Informazioni", nullptr));
         openInExplorerBtn->setText(QCoreApplication::translate("MainWindow", "Apri in explorer", nullptr));
-        openInTerminalBtn->setText(QCoreApplication::translate("MainWindow", "Apri in terminale", nullptr));
+        curObjInfoBtn->setText(QCoreApplication::translate("MainWindow", "Informazioni", nullptr));
         newVersionBtn->setText(QCoreApplication::translate("MainWindow", "Nuovo", nullptr));
-        deleteObjectBtn->setText(QCoreApplication::translate("MainWindow", "Elimina", nullptr));
         editObjectBtn->setText(QCoreApplication::translate("MainWindow", "Modifica", nullptr));
+        openInTerminalBtn->setText(QCoreApplication::translate("MainWindow", "Apri in terminale", nullptr));
+        deleteObjectBtn->setText(QCoreApplication::translate("MainWindow", "Elimina", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("MainWindow", "Struttura logica", nullptr));
         filesNum->setText(QCoreApplication::translate("MainWindow", "Numero file: ", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "Aggiorna", nullptr));

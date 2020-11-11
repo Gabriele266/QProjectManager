@@ -7,22 +7,29 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
-
+    // Assegno al progetto corrente nullptr
     current_project = nullptr;
 
     // imposto il titolo
     setWindowTitle("Project manager - nessun progetto");
     // mostro una scritta sulla console
     showConsoleInfo("Caricamento completato correttamente");
-    // aggiorno la status bar
-    ui->statusbar->showMessage("Pronto per l'uso");
+
+    // Inizializzo la barra di stato
+    proj_name = new QLabel(ui->statusbar);
+    proj_name->setText("Nessun progetto");
+    proj_creation_time = new QLabel(ui->statusbar);
+    proj_creation_time->setText("");
+
+    // Aggiungo i widget per il nome di progetto e la data di creazione
+    ui->statusbar->addWidget(proj_name);
+    ui->statusbar->addWidget(proj_creation_time);
+
     // aggiungo l'item
     ui->objectsView->addItem("Nessun progetto creato");
-    // creo il layout di anchor
 
     // carico i temi
     int res = loadThemes();
-    qInfo() << res;
     // controlllo
     if(dark_style_sheet != ""){
         setStyleSheet(dark_style_sheet);
@@ -32,6 +39,11 @@ MainWindow::MainWindow(QWidget *parent)
     }
     // carico la palette logica
     loadLogicPalette();
+
+    // Carico l'icona del progetto
+    program_icon.addFile(":/icons/program/Icons/program_icon.ico");
+    // Imposto l'icona
+    setWindowIcon(program_icon);
 }
 
 MainWindow::~MainWindow()
@@ -43,8 +55,13 @@ void MainWindow::on_actionNuovo_triggered()
 {
     // mostro il form di creazione del nuovo progetto
     NewProjectWin *newWin = new NewProjectWin();
+    // Imposto il foglio di stile
     newWin->setStyleSheet(dark_style_sheet);
+    // Imposto l'icona
+    newWin->setWindowIcon(program_icon);
+    // Eseguo il dialogo
     int res = newWin->exec();
+
     // controllo il risultato del dialogo
     if(res == QDialog::Accepted){
           current_project = newWin->getProject();
@@ -57,19 +74,28 @@ void MainWindow::on_actionNuovo_triggered()
 }
 
 void MainWindow::loadProject(){
-    // imposto il titolo
+    // Controllo che il progetto esista
     if(current_project != nullptr){
+        // Imposto il titolo della finestra
         this->setWindowTitle("Project Manager - " + current_project->getName());
+
+        // Imposto la barra di stato
+        // Aggiorno le etichette
+        proj_name->setText(current_project->getName());
+
+        // Creo il widget per la data di creazione
+        proj_creation_time->setText(current_project->getCreationTime().toString());
+
         // creo il modello file system per vedere i file
         model = new QFileSystemModel(this);
         // carico il modello per il file system
         ui->projectView->setModel(model);
-        //QMessageBox *msg = new QMessageBox();
-        //msg->setText("aggiungo percorso base al modello: " + current_project->getPath());
-//        msg->exec();
+        // Imposto il percorso root
         model->setRootPath(current_project->getPath());
-
+        // Disabilito il readonly
         model->setReadOnly(false);
+
+        // Creo la struttura logica
         // cancello tutte le strutture
         ui->logicStrTree->clear();
         // aggiungo il nodo root
@@ -78,7 +104,7 @@ void MainWindow::loadProject(){
         // controllo se esiste una versione master
         if(current_project->hasMaster()){
             Version *master = current_project->getMasterVersion();
-            // la imposto
+            // la aggiungo alla struttura
             addItem(parent, master->getName(), "Versione master", true, ui->logicStrTree);
         }
 
@@ -91,6 +117,7 @@ void MainWindow::loadProject(){
                 addItem(parent, ver->getNumericId(), "Versione " + ver->getName(), ver->isStable(), ui->logicStrTree);
             }
         }
+        ui->logicStrTree->expandAll();
     }
     else{
         QMessageBox *msg = new QMessageBox();
@@ -122,7 +149,6 @@ QTreeWidgetItem* MainWindow::addItem(QTreeWidgetItem *parent, QString name, QStr
         item->setText(2, "No");
     }
     parent->addChild(item);
-
     return item;
 }
 
@@ -145,9 +171,14 @@ void MainWindow::on_actionVersione_master_triggered()
         MasterVersionWin *wn = new MasterVersionWin(current_project);
         // eredito lo stile
         wn->setStyleSheet(dark_style_sheet);
+        // Imposto l'icona di programma
+        wn->setWindowIcon(program_icon);
 
+        // Eseguo il dialogo
         int res = wn->exec();
+
         if(res == QDialog::Accepted){
+            // Creo la versione
             Version *version = wn->getVersion();
             current_project->setMasterVersion(version);
             // mostro le informazioni
@@ -169,24 +200,39 @@ void MainWindow::on_actionAggiungi_versione_triggered()
 {
     // controllo se è stato specificato il progetto
     if(current_project != nullptr){
-        NewVersionWin *win = new NewVersionWin(current_project);
-        win->setStyleSheet(dark_style_sheet);
-        int res = win->exec();
-        if(res == QDialog::Accepted){
-            // aggiungo la versione al progetto
-            Version *ver = win->getVersion();
-            current_project->addVersion(ver);
-            // creo la versione
-            if(win->fromMaster()){
-                // creo la versione dal master
-                ver->createOnDisk(current_project->getMasterVersion());
+        // Controllo se il progetto ha una versione master
+        if(current_project->hasMaster()){
+            // Creo la finestra per la creazione della nuova versione e gli passo un puntatore al mio progetto
+            NewVersionWin *win = new NewVersionWin(current_project);
+            // Imposto il foglio di stile
+            win->setStyleSheet(dark_style_sheet);
+            // Imposto l'icona
+            win->setWindowIcon(program_icon);
+
+            // Eseguo il dialogo
+            int res = win->exec();
+            if(res == QDialog::Accepted){
+                // Aggiungo la versione al progetto
+                // Creo la versione
+                Version *ver = win->getVersion();
+                // Aggiungo la versione al progetto
+                current_project->addVersion(ver);
+                // creo la versione
+                if(win->fromMaster()){
+                    // creo la versione dal master
+                    ver->createOnDisk(current_project->getMasterVersion());
+                }
+                else{
+                    // creo la versione dalla versione precedente
+                    ver->createOnDisk(current_project->getVersion(current_project->getVersionCount() - 2));
+                }
+                // carico il progetto
+                loadProject();
             }
-            else{
-                // creo la versione dalla versione precedente
-                ver->createOnDisk(current_project->getVersion(current_project->getVersionCount() - 2));
-            }
-            // carico il progetto
-            loadProject();
+        }
+        else{
+            // Mostro un messaggio di warning
+            QMessageBox::warning(this, "Attenzione", "Prima di creare una versione derivata è necessario impostare una versione master. \nPer farlo selezionare nel menu versione la voce Versione Master.");
         }
     }
     else{
@@ -196,8 +242,6 @@ void MainWindow::on_actionAggiungi_versione_triggered()
         msg->setIcon(QMessageBox::Information);
         msg->exec();
     }
-
-
 }
 
 bool MainWindow::existsProject(QString why){
@@ -280,8 +324,6 @@ void MainWindow::updateLogics(QTreeWidgetItem *current)
     }
 }
 
-
-
 void MainWindow::openProjectInExplorer(){
     // controllo che il progetto esista
     if(existsProject(" impossibile aprire il percorso di un progetto non esistente.")){
@@ -289,7 +331,7 @@ void MainWindow::openProjectInExplorer(){
         // creo un processo
         // creo la lista di argomenti
         QStringList list;
-        list.append(current_project->getProjFilePath());
+        list.append(current_project->getProjHomePath());
         // creo il processo
         QProcess *process = new QProcess(this);
         process->start("EXPLORER.EXE", list);
@@ -299,6 +341,7 @@ void MainWindow::openProjectInExplorer(){
 void MainWindow::openMasterInExplorer(){
     // controllo che il progetto esista
     if(existsProject("impossibile aprire versione master da un progetto non esistente")){
+        // Controllo se il progetto ha una versione master
         // creo una lista con l'argomento del percorso della versione master
         QStringList list;
         list.append(current_project->getMasterVersion()->getCreationPath());
@@ -357,7 +400,6 @@ void MainWindow::on_openInExplorerBtn_clicked()
     }
 }
 
-
 void MainWindow::on_actionStruttura_file_in_explorer_triggered()
 {
     on_openInExplorerBtn_clicked();
@@ -409,9 +451,10 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_openFileBtn_clicked()
 {
-    // apro il file
-    // salvo il percorso
+    // apro il file selezionato con il notepad
+    // Formatto gli argomenti per l'esecuzione
     QStringList args;
+    // salvo il percorso
     QString file_path = ui->objectsView->currentItem()->text();
     args.append(file_path);
     // apro
@@ -485,7 +528,13 @@ void MainWindow::on_actionRimuovi_versione_triggered()
 void MainWindow::on_actionApri_versione_master_triggered()
 {
     if(current_project != nullptr){
-        openMasterInExplorer();
+        // Controllo se il progetto ha una versione master
+        if(current_project->hasMaster()){
+            openMasterInExplorer();
+        }
+        else{
+            QMessageBox::critical(this, "Attenzione", "Il progetto corrente non ha una versione master da aprire. Prima e' necessario crearne una. ");
+        }
     }
     else{
         QMessageBox::critical(this, "Errore", "Nessun progetto contenente versioni. ");
@@ -507,7 +556,6 @@ void MainWindow::on_deleteObjectBtn_clicked()
         QMessageBox::critical(this, "Errore", "Nessun progetto contenente versioni. ");
     }
 }
-
 
 void MainWindow::on_actionSalva_triggered()
 {
@@ -711,8 +759,8 @@ bool MainWindow::loadProjectFromDisk(){
     // Imposto la cartella di partenza
     dial.setDirectory("C:\\");
     // Imposto i filtri
-//    dial.setNameFilter("File di progetto ProjectManager (*.prjm)");
-//    dial.setNameFilter("*.prjm");
+    dial.setNameFilter("File di progetto ProjectManager (*.prjm)");
+    dial.setNameFilter("*.prjm");
 
     // Modifico il titolo della finestra
     dial.setWindowTitle("Apri file di progetto ProjectManager");

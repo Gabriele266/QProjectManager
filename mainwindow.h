@@ -147,6 +147,13 @@ private:
     /// Restituisce la versione selezionata nel logicStrTree
     Version* getCurrentVersion(bool exclude_master);
 
+    /// Etichetta nella status bar per il nome del progetto
+    QLabel *proj_name;
 
+    /// Etichetta per la data di creazione del progetto
+    QLabel *proj_creation_time;
+
+    /// Icona del progetto
+    QIcon program_icon;
 };
 #endif // MAINWINDOW_H

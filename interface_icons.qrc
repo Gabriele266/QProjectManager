@@ -12,4 +12,7 @@
         <file>Icons/module_icon.png</file>
         <file>Icons/function_icon.png</file>
     </qresource>
+    <qresource prefix="/icons/program">
+        <file>Icons/program_icon.ico</file>
+    </qresource>
 </RCC>
