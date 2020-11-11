@@ -16,14 +16,20 @@ MainWindow::MainWindow(QWidget *parent)
     showConsoleInfo("Caricamento completato correttamente");
 
     // Inizializzo la barra di stato
+    // Creo le etichette e imposto il padrone
     proj_name = new QLabel(ui->statusbar);
-    proj_name->setText("Nessun progetto");
     proj_creation_time = new QLabel(ui->statusbar);
+    proj_home_path = new QLabel(ui->statusbar);
+
+    // Imposto il testo
+    proj_name->setText("Nessun progetto");
     proj_creation_time->setText("");
+    proj_home_path->setText("");
 
     // Aggiungo i widget per il nome di progetto e la data di creazione
     ui->statusbar->addWidget(proj_name);
     ui->statusbar->addWidget(proj_creation_time);
+    ui->statusbar->addWidget(proj_home_path);
 
     // aggiungo l'item
     ui->objectsView->addItem("Nessun progetto creato");
@@ -82,9 +88,8 @@ void MainWindow::loadProject(){
         // Imposto la barra di stato
         // Aggiorno le etichette
         proj_name->setText(current_project->getName());
-
-        // Creo il widget per la data di creazione
         proj_creation_time->setText(current_project->getCreationTime().toString());
+        proj_home_path->setText(current_project->getHomePath());
 
         // creo il modello file system per vedere i file
         model = new QFileSystemModel(this);
@@ -331,7 +336,7 @@ void MainWindow::openProjectInExplorer(){
         // creo un processo
         // creo la lista di argomenti
         QStringList list;
-        list.append(current_project->getProjHomePath());
+        list.append(current_project->getHomePath());
         // creo il processo
         QProcess *process = new QProcess(this);
         process->start("EXPLORER.EXE", list);
@@ -423,7 +428,7 @@ void MainWindow::on_openInTerminalBtn_clicked()
         if(descr.contains("PROGETTO")){
             // si tratta di un progetto
             // apro il percorso del progetto corrente in explorer
-            openCmdPrompt(current_project->getProjFilePath());
+            openCmdPrompt(current_project->getFilePath());
         }
         else if(descr.contains("MASTER")){
             // apro la versione master nell' explorer
@@ -785,7 +790,7 @@ void MainWindow::on_actionApri_file_progetto_triggered()
     if(current_project != nullptr){
         // Apre il file di progetto
         QStringList list;
-        list.append(current_project->getProjFilePath());
+        list.append(current_project->getFilePath());
         // Avvio il processo
         QProcess::execute("NOTEPAD", list);
     }

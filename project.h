@@ -34,7 +34,7 @@ public:
     void setPath(QString pt);
 
     /// Imposta il tipo di progetto
-    void setProjType(ProjectType ty);
+    void setType(ProjectType ty);
 
     /// Determina se creare un file di informazioni
     void setInfoFile(bool info_file);
@@ -51,14 +51,14 @@ public:
     /// Restituisce il nome del progetto
     QString getName();
 
-    /// Restituisce il percorso del progetto
+    /// Restituisce il percorso in cui è creato il progetto
     QString getPath();
 
-    /// Restituisce il percorso in cui si trovano i file di progetto
-    QString getProjFilePath();
+    /// Restituisce il percorso del file di progetto
+    QString getFilePath();
 
     /// Restituisce il percorso in cui vengono create le versioni, dove vengono scritte le informazioni del progetto etc.
-    QString getProjHomePath();
+    QString getHomePath();
 
     /// Determina se il progetto è stato salvato
     bool isSaved();
@@ -111,7 +111,6 @@ public:
     /// Cancella tutte le versioni impostandone tutti i puntatori a nullptr
     void clearAll(bool fromDisk = false);
 
-
 private:
     // versioni contenute
     Version *subVersions[100];
@@ -125,6 +124,9 @@ private:
 
     // percorso del progetto
     QString path;
+
+    // Percorso in cui si trovano le versioni e il file di progetto
+    QString home_path;
 
     // tipo di progetto
     ProjectType type;

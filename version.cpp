@@ -39,6 +39,17 @@ void Version::setVersionName(QString n){
     version_name = n;
 }
 
+void Version::setNumericId(QString id){
+    QStringList list = id.split('.');
+
+    if(list.count() == 3){
+        major_branch = list[0].toInt();
+        sub_branch = list[1].toInt();
+        revision_num = list[2].toInt();
+    }
+    qInfo() << "Numeric id converted to: " << getNumericId() << endl;
+}
+
 bool Version::createOnDisk(Version *source){
     qInfo() << "Creazione sul disco della versione " << version_name << '\n';
     // controllo che tutto il necessario sia disponibile

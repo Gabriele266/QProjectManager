@@ -57,6 +57,9 @@ public:
     /// Imposta il nome della versione
     void setVersionName(QString name);
 
+    /// Imposta l'id numerico della versione
+    void setNumericId(QString id);
+
     /// Restituisce il percorso della versione
     QString formatNamePath(VersionNameFlag flags[10]);
 

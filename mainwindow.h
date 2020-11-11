@@ -155,5 +155,9 @@ private:
 
     /// Icona del progetto
     QIcon program_icon;
+
+    /// Etichetta con il percorso di lavoro
+    QLabel *proj_home_path;
+
 };
 #endif // MAINWINDOW_H

@@ -13,6 +13,7 @@ Project::Project()
 Project::Project(QString p, QString n, ProjectType tp, bool file){
     path = p;
     name = n;
+    home_path = path + "\\" + name;
     type = tp;
     infoFile = file;
     masterVersion = nullptr;
@@ -27,7 +28,7 @@ void Project::setPath(QString pt){
     path = pt;
 }
 
-void Project::setProjType(ProjectType ty){
+void Project::setType(ProjectType ty){
     type = ty;
 }
 
@@ -37,8 +38,10 @@ void Project::save(){
     createProjectFile();
 }
 
-QString Project::getProjHomePath(){
-    return path + "\\" + name + "\\";
+QString Project::getHomePath(){
+    home_path = path + "\\" + name;
+    home_path = home_path.replace('/', '\\');
+    return home_path;
 }
 
 int Project::getVersionCount(){
@@ -56,8 +59,8 @@ bool Project::hasMaster(){
     return false;
 }
 
-QString Project::getProjFilePath(){
-    return path + '\\' + name + ".prjm";
+QString Project::getFilePath(){
+    return getHomePath() + '\\' + name + ".prjm";
 }
 
 bool Project::existsVersion(QString numericId){
@@ -119,7 +122,75 @@ bool Project::create(){
 }
 
 Project* Project::loadFromDisk(QString file_path){
-    return new Project();
+    // Carico il progetto
+    // Creo il documento dom
+    QDomDocument document;
+    // Creo il file per leggere le informazioni
+    QFile read(file_path);
+    // Progetto creato
+    Project *project = new Project();
+    // Controllo se riesco ad aprirlo
+    if(read.open(QIODevice::ReadOnly)){
+        // Carico il contenuto dentro il documento
+        if(document.setContent(&read)){
+            // Avvio il caricamento
+            // Leggo il nodo root
+            QDomElement root = document.firstChildElement("project");
+            // Lista con gli elementi figli
+            QDomNodeList childs = root.childNodes();
+
+            qInfo() << "Root child elements: " << childs.count() << endl;
+
+            // Controllo il numero di nodi
+            if(childs.count() >= 2){
+                // Prendo il primo nodo e lo converto in elemento
+                QDomElement informations_elem = childs.at(0).toElement();
+
+                // Estraggo l'attributo name
+                project->setName(informations_elem.attribute("name"));
+
+                // Estraggo l'attributo description
+                project->setDescription(informations_elem.attribute("description"));
+
+                // Estraggo la data di creazione
+                project->setCreationTime(QDateTime::fromString(informations_elem.attribute("creationDate")));
+
+                // Calcolo il percorso home del progetto
+                QFileInfo info(read);
+                QDir comp = info.path();
+                comp.cdUp();
+                project->setPath(comp.path());
+
+                // Carico le informazioni della versione master
+                if(childs.count() > 2){
+                    // Converto in elemento
+                    QDomElement master_elem = childs.at(2).toElement();
+                    QDomText text = master_elem.firstChild().toText();
+                    Version *master = new Version();
+                    // Estraggo le informazioni necessarie
+                    master->setNumericId(master_elem.attribute("id"));
+                    master->setMaster(true);
+                    master->setCreationPath(text.nodeValue());
+                    master->setProjectName(project->getName());
+                    // Aggiungo la versione al progetto
+                    project->setMasterVersion(master);
+                }
+            }
+            else{
+                QMessageBox::critical(nullptr, "Errore", "Errore: il caricamento del progetto dal file selezionato \nnon è possibile perchè il contenuto è insufficente ad un corretto caricamento.\n"
+                                                         "File da cui caricare:  " + file_path);
+            }
+
+        }
+        // Chiudo il file
+        read.close();
+
+    }
+    else{
+        // Mostro l'errore
+        QMessageBox::critical(nullptr, "Errore", read.errorString());
+    }
+    return project;
 }
 
 bool Project::createProjectFolder(){
@@ -172,10 +243,12 @@ bool Project::createProjectFile(){
         // Aggiungo l'elemento per la posizione delle annotazioni
         annotations.setAttribute("location", "outside");
         annotations.setAttribute("format", "html");
-        annotations.setNodeValue(getNotesPath());
+        annotations.appendChild(document.createTextNode(getNotesPath()));
 
-        info_elem.appendChild(annotations);
+        // Aggiungo gli elementi al nodo root
         root_elem.appendChild(info_elem);
+        root_elem.appendChild(annotations);
+        // Controllo se devo salvare la versione master
         if(masterVersion != nullptr){
             // Creo l'elemento per la versione master
             QDomElement master_elem = document.createElement("master");
@@ -218,8 +291,6 @@ bool Project::createProjectFile(){
         // Scrivo il documento sul file
         file.write(document.toString().toStdString().c_str());
         file.close();
-
-
         return true;
     }
     else{
