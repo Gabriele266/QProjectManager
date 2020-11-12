@@ -26,6 +26,7 @@ SOURCES += \
     newclasswin.cpp \
     newprojectwin.cpp \
     newversionwin.cpp \
+    notesedit.cpp \
     objectinfo.cpp \
     project.cpp \
     projectinfowin.cpp \
@@ -49,6 +50,7 @@ HEADERS += \
     newclasswin.h \
     newprojectwin.h \
     newversionwin.h \
+    notesedit.h \
     objectinfo.h \
     project.h \
     projectinfowin.h \
@@ -62,6 +64,7 @@ FORMS += \
     newclasswin.ui \
     newprojectwin.ui \
     newversionwin.ui \
+    notesedit.ui \
     projectinfowin.ui
 
 # Default rules for deployment.

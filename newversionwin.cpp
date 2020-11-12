@@ -9,6 +9,20 @@ NewVersionWin::NewVersionWin(Project *proj, QWidget *parent) :
     project = proj;
     // imposto il titolo
     setWindowTitle("Creazione nuova versione");
+    // Imposto gli identificatori per il stylesheet
+    ui->label->setObjectName("windowTitleLabel");
+    ui->label_2->setObjectName("windowSubtitleLabel");
+
+    // Imposto il nome di oggetto per le etichette base
+    ui->label_3->setObjectName("windowLabel");
+    ui->label_4->setObjectName("windowLabel");
+    ui->label_5->setObjectName("windowLabel");
+    ui->label_6->setObjectName("windowLabel");
+    ui->label_7->setObjectName("windowLabel");
+    ui->label_8->setObjectName("windowLabel");
+    ui->label_9->setObjectName("windowLabel");
+
+
     if(project != nullptr){
         // scrivo il nome del progetto
         ui->projName->setText(proj->getName());

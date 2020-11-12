@@ -75,6 +75,10 @@ bool Version::createOnDisk(Version *source){
                 // creo il percorso
                 int res = system(dir_command.toStdString().c_str());
                 if(res == 0){
+                    // Creo il file per le note
+                    setNotesPath(complete_path + "\\" + "notes.html");
+                    // Creo il file
+                    createNotesPath(getNotesPath());
                     // successo
                     if(source != nullptr){
                         // copio i file
@@ -120,10 +124,30 @@ bool Version::createOnDisk(Version *source){
     }
 }
 
+void Version::createNotesPath(QString n){
+    if(n != ""){
+        // Creo un oggetto file
+        QFile file(n);
+        // Controllo se riesco ad aprirlo
+        if(file.open(QIODevice::WriteOnly)){
+            // Scrivo il file
+            file.write("<htlm> </html>");
+            file.close();
+        }
+        else{
+
+        }
+    }
+}
+
 void Version::resetFlags(){
     for(int x =0; x < 10; x++){
         name_flags[x] = VersionNameFlag::NullFlag;
     }
+}
+
+QString Version::getProjectName(){
+    return project_name;
 }
 
 bool Version::deleteFromDisk(){

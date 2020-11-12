@@ -564,8 +564,11 @@ void MainWindow::on_deleteObjectBtn_clicked()
 
 void MainWindow::on_actionSalva_triggered()
 {
-    // salvo
-    current_project->save();
+    // Controllo se il progetto esiste
+    if(current_project != nullptr){
+        // salvo
+        current_project->save();
+    }
 }
 
 void MainWindow::on_addClassBtn_clicked()
@@ -802,4 +805,29 @@ void MainWindow::on_actionApri_file_progetto_triggered()
 void MainWindow::on_actionApri_progetto_triggered()
 {
     loadProjectFromDisk();
+}
+
+void MainWindow::on_actionModifica_note_versione_triggered()
+{
+    // Controllo che esista un progetto
+    if(current_project != nullptr){
+        if(ui->logicStrTree->currentItem()->text(1).contains("Versione")){
+            // Avvio la modifica della versione
+            Version *ver = current_project->getVersion(ui->logicStrTree->currentIndex().row() - 1);
+            // Creo la finestra
+            NotesEdit *nEdit = new NotesEdit(ver);
+            // Imposto lo stilesheet
+            nEdit->setStyleSheet(dark_style_sheet);
+            // Imposto l'icona
+            nEdit->setWindowIcon(program_icon);
+            // MOstro la finestra
+            nEdit->show();
+        }
+        else{
+            QMessageBox::warning(this, "Attenzione", "L'elemento selezionato non ha delle annotazioni associate. ");
+        }
+    }
+    else{
+        QMessageBox::critical(this, "Attenzione", "Impossibile modificare le note di un progetto non esistente. ");
+    }
 }

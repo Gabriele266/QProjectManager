@@ -5486,6 +5486,7 @@
    </attribute>
    <addaction name="actionNuovo"/>
    <addaction name="actionSalva"/>
+   <addaction name="separator"/>
    <addaction name="actionAggiungi_versione"/>
    <addaction name="separator"/>
    <addaction name="actionApri_progetto"/>
@@ -5520,6 +5521,10 @@
    </property>
   </action>
   <action name="actionAggiungi_versione">
+   <property name="icon">
+    <iconset resource="interface_icons.qrc">
+     <normaloff>:/icons/program/Icons/new_version_icon.png</normaloff>:/icons/program/Icons/new_version_icon.png</iconset>
+   </property>
    <property name="text">
     <string>Aggiungi versione</string>
    </property>
@@ -5540,8 +5545,15 @@
    </property>
   </action>
   <action name="actionSalva">
+   <property name="icon">
+    <iconset resource="interface_icons.qrc">
+     <normaloff>:/icons/program/Icons/save_icon.png</normaloff>:/icons/program/Icons/save_icon.png</iconset>
+   </property>
    <property name="text">
     <string>Salva</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionSalva_tutto">

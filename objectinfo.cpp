@@ -2,7 +2,7 @@
 
 ObjectInfo::ObjectInfo()
 {
-
+    notes_path = "none";
 }
 
 void ObjectInfo::setCompany(QString val)
@@ -71,4 +71,7 @@ void ObjectInfo::setNotesEncodingType(ObjectTextEncoding info){
     notes_encoding = info;
 }
 
+void ObjectInfo::setNotesPath(QString path){
+    notes_path = path;
+}
 

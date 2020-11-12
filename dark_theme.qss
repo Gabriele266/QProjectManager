@@ -1,10 +1,30 @@
 QMainWindow {background-color: rgb(100, 100, 100); color:white; }
-QLabel {color: white; background-color: rgb(100, 100, 100); }
+
+QLabel#windowTitleLabel {
+    color: #DAAF0F;
+    background-color: rgb(100, 100, 100); 
+}
+
+QLabel#windowSubtitleLabel{
+    color: #26BBF3;
+    background-color: rgb(100, 100, 100); 
+}
+
+QLabel#windowLabel{
+    color: white;
+    background-color: rgb(100, 100, 100); 
+}
+
 QMenu {background-color: rgb(100, 100, 100); color:white}
 
 QMenuBar {
     background-color: rgb(100, 100, 100); 
     color:white;
+}
+
+QComboBox{
+    background-color: rgb(100, 100, 100);
+    color: white;
 }
 
 QListWidget{

@@ -21,6 +21,7 @@
 #include "logicobjectparser.h"
 #include "logicviewpalette.h"
 #include "theme_selector.cpp"
+#include "notesedit.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -108,6 +109,8 @@ private slots:
     void on_actionApri_file_progetto_triggered();
 
     void on_actionApri_progetto_triggered();
+
+    void on_actionModifica_note_versione_triggered();
 
 private:
     Ui::MainWindow *ui;

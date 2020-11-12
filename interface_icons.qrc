@@ -14,5 +14,7 @@
     </qresource>
     <qresource prefix="/icons/program">
         <file>Icons/program_icon.ico</file>
+        <file>Icons/save_icon.png</file>
+        <file>Icons/new_version_icon.png</file>
     </qresource>
 </RCC>

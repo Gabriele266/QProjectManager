@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NotesEdit</class>
+ <widget class="QMainWindow" name="NotesEdit">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>983</width>
+    <height>659</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QListWidget" name="LineNumbersList">
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPlainTextEdit" name="contentEditor"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>983</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSalva"/>
+    <addaction name="actionPulisci"/>
+    <addaction name="separator"/>
+    <addaction name="actionApri"/>
+    <addaction name="separator"/>
+    <addaction name="actionChiudi"/>
+   </widget>
+   <widget class="QMenu" name="menuFormato">
+    <property name="title">
+     <string>Formato</string>
+    </property>
+    <addaction name="actionTesto_semplice"/>
+    <addaction name="actionHtml"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuFormato"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionElenco_numerato"/>
+   <addaction name="actionElenco"/>
+   <addaction name="actionDichiarazione_sezione"/>
+  </widget>
+  <action name="actionSalva">
+   <property name="text">
+    <string>Salva</string>
+   </property>
+  </action>
+  <action name="actionPulisci">
+   <property name="text">
+    <string>Pulisci</string>
+   </property>
+  </action>
+  <action name="actionChiudi">
+   <property name="text">
+    <string>Chiudi</string>
+   </property>
+  </action>
+  <action name="actionApri">
+   <property name="text">
+    <string>Apri</string>
+   </property>
+  </action>
+  <action name="actionTesto_semplice">
+   <property name="text">
+    <string>Testo semplice</string>
+   </property>
+  </action>
+  <action name="actionHtml">
+   <property name="text">
+    <string>Html</string>
+   </property>
+  </action>
+  <action name="actionElenco_numerato">
+   <property name="text">
+    <string>Elenco numerato</string>
+   </property>
+  </action>
+  <action name="actionElenco">
+   <property name="text">
+    <string>Elenco</string>
+   </property>
+  </action>
+  <action name="actionDichiarazione_sezione">
+   <property name="text">
+    <string>Dichiarazione sezione</string>
+   </property>
+   <property name="toolTip">
+    <string>Aggiunge nella posizione del cursore una dichiarazione di sezione.</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

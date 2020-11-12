@@ -34,13 +34,14 @@
     <rect>
      <x>130</x>
      <y>20</y>
-     <width>325</width>
-     <height>35</height>
+     <width>341</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <pointsize>22</pointsize>
+     <family>MS Serif</family>
+     <pointsize>25</pointsize>
     </font>
    </property>
    <property name="text">
@@ -52,9 +53,16 @@
     <rect>
      <x>190</x>
      <y>70</y>
-     <width>321</width>
+     <width>361</width>
      <height>16</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Modern</family>
+     <pointsize>10</pointsize>
+     <italic>true</italic>
+    </font>
    </property>
    <property name="text">
     <string>Inserire i parametri necessari per la creazione della nuova versione</string>

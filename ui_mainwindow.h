@@ -276,6 +276,9 @@ public:
         actionNuova_libreria->setObjectName(QString::fromUtf8("actionNuova_libreria"));
         actionAggiungi_versione = new QAction(MainWindow);
         actionAggiungi_versione->setObjectName(QString::fromUtf8("actionAggiungi_versione"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/icons/program/Icons/new_version_icon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionAggiungi_versione->setIcon(icon1);
         actionControlla_differenze = new QAction(MainWindow);
         actionControlla_differenze->setObjectName(QString::fromUtf8("actionControlla_differenze"));
         actionRimuovi_versione = new QAction(MainWindow);
@@ -284,6 +287,9 @@ public:
         actionModifica_versione->setObjectName(QString::fromUtf8("actionModifica_versione"));
         actionSalva = new QAction(MainWindow);
         actionSalva->setObjectName(QString::fromUtf8("actionSalva"));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/icons/program/Icons/save_icon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionSalva->setIcon(icon2);
         actionSalva_tutto = new QAction(MainWindow);
         actionSalva_tutto->setObjectName(QString::fromUtf8("actionSalva_tutto"));
         actionSalva_in_nuovo_progetto = new QAction(MainWindow);
@@ -1392,6 +1398,7 @@ public:
         menuProgetto->addAction(actionEsporta_informazioni);
         toolBar->addAction(actionNuovo);
         toolBar->addAction(actionSalva);
+        toolBar->addSeparator();
         toolBar->addAction(actionAggiungi_versione);
         toolBar->addSeparator();
         toolBar->addAction(actionApri_progetto);
@@ -1422,6 +1429,9 @@ public:
         actionRimuovi_versione->setText(QCoreApplication::translate("MainWindow", "Rimuovi versione", nullptr));
         actionModifica_versione->setText(QCoreApplication::translate("MainWindow", "Modifica versione", nullptr));
         actionSalva->setText(QCoreApplication::translate("MainWindow", "Salva", nullptr));
+#if QT_CONFIG(shortcut)
+        actionSalva->setShortcut(QCoreApplication::translate("MainWindow", "Ctrl+S", nullptr));
+#endif // QT_CONFIG(shortcut)
         actionSalva_tutto->setText(QCoreApplication::translate("MainWindow", "Salva tutto", nullptr));
         actionSalva_in_nuovo_progetto->setText(QCoreApplication::translate("MainWindow", "Salva in nuovo progetto", nullptr));
         actionApri_progetto->setText(QCoreApplication::translate("MainWindow", "Apri progetto", nullptr));

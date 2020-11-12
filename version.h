@@ -75,6 +75,9 @@ public:
     /// Restituisce l'identificatore numerico della versione
     QString getNumericId();
 
+    /// Restitiuisce il nome del progetto a cui appartiene
+    QString getProjectName();
+
     /// Definisce se la versione è master o no
     void setMaster(bool val);
 
@@ -136,6 +139,9 @@ private:
 
     /// Resetta i flag
     void resetFlags();
+
+    /// Crea il file per le annotazioni
+    void createNotesPath(QString path);
 
 };
 
